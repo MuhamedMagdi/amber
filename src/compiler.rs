@@ -196,7 +196,7 @@ impl AmberCompiler {
     }
 
     fn gen_sudo_preamble(&self) -> FragmentKind {
-        let condition = r#"[ "$EUID" -ne 0 ] && command -v sudo >/dev/null 2>&1 && __sudo=sudo"#;
+        let condition = r#"[ "$EUID" -ne 0 ] && { { command -v sudo >/dev/null 2>&1 && __sudo=sudo; } || { command -v doas >/dev/null 2>&1 && __sudo=doas; }; }"#;
         RawFragment::new(condition).to_frag()
     }
 
